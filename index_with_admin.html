@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sikunju's Prompt Generator - Admin</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .app-container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: white;
+            border-right: 1px solid #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            box-shadow: 2px 0 4px rgba(0,0,0,0.05);
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid #e0e0e0;
+            background: white;
+        }
+
+        .sidebar-header h1 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1a73e8;
+            margin-bottom: 4px;
+        }
+
+        .sidebar-header p {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .sidebar-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px;
+        }
+
+        .category-btn {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 6px;
+            background: transparent;
+            border: 1px solid transparent;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            text-align: left;
+            color: #666;
+            transition: all 0.2s;
+        }
+
+        .category-btn:hover {
+            background: #f0f0f0;
+            border-color: #ddd;
+        }
+
+        .category-btn.active {
+            background: #1a73e8;
+            color: white;
+            border-color: #1a73e8;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #f5f5f5;
+        }
+
+        .header {
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .header-title {
+            font-size: 20px;
+            font-weight: 500;
+            color: #1a1a1a;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .header-actions button {
+            padding: 8px 12px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+
+        .header-actions button:hover {
+            background: #f0f0f0;
+            border-color: #999;
+        }
+
+        .header-actions button.admin-btn {
+            background: #ff9800;
+            color: white;
+            border-color: #ff9800;
+        }
+
+        .header-actions button.admin-btn:hover {
+            background: #f57c00;
+        }
+
+        .content-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+        }
+
+        .section {
+            margin-bottom: 24px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+
+        .section-title {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #999;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .login-container {
+            max-width: 400px;
+            margin: 100px auto;
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .login-container h1 {
+            margin-bottom: 24px;
+            color: #1a73e8;
+        }
+
+        .login-container input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 16px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .login-container button {
+            width: 100%;
+            padding: 12px;
+            background: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .login-container button:hover {
+            background: #1557b0;
+        }
+
+        .admin-panel {
+            display: none;
+        }
+
+        .admin-panel.active {
+            display: block;
+        }
+
+        .admin-section {
+            margin-bottom: 24px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid #ff9800;
+        }
+
+        .admin-section h2 {
+            margin-bottom: 16px;
+            color: #ff9800;
+            font-size: 16px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 6px;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 13px;
+            font-family: inherit;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #ff9800;
+            box-shadow: 0 0 0 3px rgba(255, 152, 0, 0.1);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .button-group button {
+            flex: 1;
+            padding: 10px 16px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            background: white;
+            transition: all 0.2s;
+        }
+
+        .button-group button:hover {
+            background: #f0f0f0;
+        }
+
+        .button-group button.primary {
+            background: #ff9800;
+            color: white;
+            border-color: #ff9800;
+        }
+
+        .button-group button.primary:hover {
+            background: #f57c00;
+        }
+
+        .button-group button.danger {
+            background: #f44336;
+            color: white;
+            border-color: #f44336;
+        }
+
+        .button-group button.danger:hover {
+            background: #d32f2f;
+        }
+
+        .prompts-list {
+            display: grid;
+            gap: 12px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .prompt-item {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 12px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .prompt-item-info {
+            flex: 1;
+        }
+
+        .prompt-item-title {
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 4px;
+        }
+
+        .prompt-item-category {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .prompt-item-actions {
+            display: flex;
+            gap: 6px;
+        }
+
+        .prompt-item-actions button {
+            padding: 6px 10px;
+            font-size: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .prompt-item-actions button:hover {
+            background: #f0f0f0;
+        }
+
+        .prompt-item-actions button.edit {
+            border-color: #1a73e8;
+            color: #1a73e8;
+        }
+
+        .prompt-item-actions button.delete {
+            border-color: #f44336;
+            color: #f44336;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .framework-tabs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .framework-tab {
+            padding: 10px;
+            background: #f0f0f0;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+
+        .framework-tab:hover {
+            border-color: #1a73e8;
+            background: #f9f9f9;
+        }
+
+        .framework-tab.active {
+            background: #1a73e8;
+            color: white;
+            border-color: #1a73e8;
+        }
+
+        .template-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 8px;
+            max-height: 280px;
+            overflow-y: auto;
+            margin-bottom: 16px;
+            padding: 8px;
+            background: #f9f9f9;
+            border-radius: 6px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .template-card {
+            padding: 12px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            color: #333;
+            text-align: center;
+            line-height: 1.4;
+            transition: all 0.2s;
+        }
+
+        .template-card:hover {
+            border-color: #1a73e8;
+            background: #f0f7ff;
+        }
+
+        .template-card.active {
+            background: #1a73e8;
+            color: white;
+            border-color: #1a73e8;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 10px 12px;
+            margin-bottom: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+
+        .input-group {
+            margin-bottom: 16px;
+        }
+
+        .input-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 6px;
+        }
+
+        input[type="text"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 13px;
+            font-family: inherit;
+        }
+
+        input[type="text"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #1a73e8;
+            box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .button {
+            padding: 12px 16px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background: white;
+            color: #333;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .button:hover {
+            background: #f0f0f0;
+            border-color: #999;
+        }
+
+        .button-primary {
+            width: 100%;
+            background: #1a73e8;
+            color: white;
+            border-color: #1a73e8;
+            margin-top: 12px;
+        }
+
+        .button-primary:hover {
+            background: #1557b0;
+        }
+
+        .button-success {
+            background: #34a853;
+            color: white;
+            border-color: #34a853;
+        }
+
+        .button-success:hover {
+            background: #2d8e47;
+        }
+
+        .preview-section {
+            background: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+
+        .preview-label {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #999;
+            margin-bottom: 8px;
+        }
+
+        .preview-box {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 12px;
+            font-size: 12px;
+            font-family: 'Monaco', 'Courier New', monospace;
+            color: #333;
+            max-height: 300px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            line-height: 1.5;
+        }
+
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #34a853;
+            color: white;
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 1000;
+        }
+
+        .notification.show {
+            opacity: 1;
+        }
+
+        .notification.error {
+            background: #f44336;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 24px;
+            border-radius: 8px;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            width: 90%;
+        }
+
+        .modal-content h2 {
+            margin-bottom: 16px;
+            color: #333;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .stat-card {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 12px;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .stat-card .number {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1a73e8;
+            margin-bottom: 4px;
+        }
+
+        .stat-card .label {
+            font-size: 12px;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .app-container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                max-height: 200px;
+                border-right: none;
+                border-bottom: 1px solid #e0e0e0;
+            }
+
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+
+            .content-area {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="loginContainer" class="login-container">
+        <h1>Admin Login</h1>
+        <input type="password" id="adminPassword" placeholder="Enter admin password">
+        <button onclick="adminLogin()">Login</button>
+        <p style="margin-top: 16px; color: #999; font-size: 12px;">Default: admin123</p>
+    </div>
+
+    <div id="appContainer" class="app-container hidden">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h1>sikunju</h1>
+                <p>Prompt Generator</p>
+            </div>
+            <div class="sidebar-content" id="categoryList"></div>
+        </div>
+
+        <div class="main-content">
+            <div class="header">
+                <div class="header-title" id="headerTitle">Create Your Prompt</div>
+                <div class="header-actions">
+                    <button class="admin-btn" onclick="toggleAdminPanel()">Admin</button>
+                    <button onclick="userLogout()">Logout</button>
+                </div>
+            </div>
+
+            <div class="content-area">
+                <!-- USER MODE -->
+                <div id="userMode">
+                    <div class="section">
+                        <div class="section-title">Framework</div>
+                        <div class="framework-tabs" id="frameworkTabs"></div>
+                    </div>
+
+                    <div class="section">
+                        <div class="section-title">Templates</div>
+                        <input type="text" class="search-box" id="templateSearch" placeholder="Search templates...">
+                        <div class="template-grid" id="templateList"></div>
+                    </div>
+
+                    <div class="section">
+                        <div class="section-title">Customize</div>
+                        <div class="grid-2">
+                            <div class="input-group">
+                                <label class="input-label">Task Type</label>
+                                <select id="taskType">
+                                    <option>Write & create</option>
+                                    <option>Analyze & research</option>
+                                    <option>Code & technical</option>
+                                    <option>Brainstorm & ideate</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label class="input-label">Tone</label>
+                                <select id="tone">
+                                    <option>Professional</option>
+                                    <option>Casual</option>
+                                    <option>Friendly</option>
+                                    <option>Creative</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label">Main Goal</label>
+                            <input type="text" id="goal" placeholder="What do you want to accomplish?">
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label">Context</label>
+                            <textarea id="context" placeholder="Add relevant details and constraints..."></textarea>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label">Output Format</label>
+                            <textarea id="output" placeholder="E.g., JSON, bullet points, markdown..."></textarea>
+                        </div>
+
+                        <button class="button button-primary" onclick="generatePrompt()">Generate Prompt</button>
+                    </div>
+
+                    <div class="preview-section">
+                        <div class="preview-label">Your Prompt</div>
+                        <div class="preview-box" id="preview">Your generated prompt will appear here...</div>
+                        <div class="button-group">
+                            <button class="button button-success" onclick="copyToClipboard()">Copy</button>
+                            <button class="button" onclick="downloadPrompt()">Download</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ADMIN MODE -->
+                <div id="adminMode" class="admin-panel">
+                    <div class="admin-section">
+                        <h2>📊 Statistics</h2>
+                        <div class="stats" id="stats"></div>
+                    </div>
+
+                    <div class="admin-section">
+                        <h2>➕ Add New Template</h2>
+                        <div class="form-group">
+                            <label>Category</label>
+                            <select id="newCategory">
+                                <option>Master Prompts</option>
+                                <option>Writing</option>
+                                <option>Marketing</option>
+                                <option>Business</option>
+                                <option>Development</option>
+                                <option>Analysis</option>
+                                <option>Creative</option>
+                                <option>Education</option>
+                                <option>Custom</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Template Name</label>
+                            <input type="text" id="newName" placeholder="E.g., Email Campaign">
+                        </div>
+                        <div class="form-group">
+                            <label>Goal/Description</label>
+                            <textarea id="newGoal" placeholder="What is this template for?"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Context Template</label>
+                            <textarea id="newContext" placeholder="Context: [what] | Audience: [who]"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Output Format</label>
+                            <textarea id="newOutput" placeholder="JSON, bullet points, etc."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Framework</label>
+                            <select id="newFramework">
+                                <option>detailed</option>
+                                <option>role</option>
+                                <option>format</option>
+                                <option>few-shot</option>
+                                <option>step-by-step</option>
+                                <option>creative</option>
+                            </select>
+                        </div>
+                        <button class="button button-success" onclick="addNewTemplate()">Add Template</button>
+                    </div>
+
+                    <div class="admin-section">
+                        <h2>✏️ Manage Templates</h2>
+                        <p style="margin-bottom: 12px; color: #666; font-size: 13px;">Total templates: <strong id="totalCount">0</strong></p>
+                        <div class="prompts-list" id="adminTemplateList"></div>
+                    </div>
+
+                    <div class="admin-section">
+                        <h2>💾 Data Management</h2>
+                        <div class="button-group">
+                            <button class="button button-primary" onclick="exportData()">Export Data</button>
+                            <button class="button button-primary" onclick="document.getElementById('importFile').click()">Import Data</button>
+                            <button class="button" style="background: #ff9800; color: white; border-color: #ff9800;" onclick="resetToDefaults()">Reset to Defaults</button>
+                        </div>
+                        <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importData(event)">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="notification" id="notification"></div>
+
+    <script>
+        const DEFAULT_TEMPLATES = {
+            'Master Prompts': {
+                'Ultimate Master': { goal: 'Get expert responses', context: 'You are an expert. Give most accurate answer.', output: 'Structured response', framework: 'detailed' },
+                'Programming': { goal: 'Write production code', context: 'Senior engineer 20+ years. Clean code.', output: 'Code with docs', framework: 'detailed' },
+                'AI Images': { goal: 'Create image prompts', context: 'Detailed prompts for Midjourney/DALL-E', output: 'Detailed description', framework: 'creative' },
+                'Learning': { goal: 'Teach thoroughly', context: 'University professor style', output: 'Multiple levels', framework: 'detailed' },
+                'Research': { goal: 'Deep analysis', context: 'Professional researcher', output: 'Comprehensive report', framework: 'detailed' },
+                'Business': { goal: 'Business analysis', context: 'CEO strategy perspective', output: 'Strategic insights', framework: 'detailed' },
+                'YouTube': { goal: 'Viral content', context: 'YouTube strategist', output: 'Script and strategy', framework: 'creative' },
+                'Debugging': { goal: 'Solve problems', context: 'Senior engineer debugging', output: 'Root cause and fix', framework: 'detailed' },
+            },
+            'Writing': {
+                'Blog Outline': { goal: 'Create blog outline', context: 'Topic: [subject]', output: 'Sections', framework: 'structured' },
+                'Product Desc': { goal: 'Product description', context: 'Product: [name]', output: 'Features', framework: 'detailed' },
+                'Social Post': { goal: 'Social content', context: 'Platform: [site]', output: 'Variations', framework: 'creative' },
+                'Email': { goal: 'Draft email', context: 'Type: [newsletter]', output: 'Full email', framework: 'detailed' },
+            },
+            'Marketing': {
+                'Campaign': { goal: 'Marketing campaign', context: 'Product: [what]', output: 'Strategy', framework: 'structured' },
+                'Ad Copy': { goal: 'Ad copy', context: 'Platform: [where]', output: 'Variations', framework: 'few-shot' },
+                'Landing Page': { goal: 'Landing page', context: 'Product: [name]', output: 'Full page', framework: 'detailed' },
+            },
+            'Business': {
+                'Business Plan': { goal: 'Business plan', context: 'Business: [name]', output: 'Complete plan', framework: 'structured' },
+                'Pitch Deck': { goal: 'Pitch outline', context: 'Business: [name]', output: 'Slides', framework: 'structured' },
+            },
+            'Development': {
+                'Code Comments': { goal: 'Code explanation', context: 'Language: [type]', output: 'Comments', framework: 'detailed' },
+                'API Docs': { goal: 'API documentation', context: 'API: [name]', output: 'Reference', framework: 'structured' },
+            },
+            'Analysis': {
+                'Market Research': { goal: 'Market analysis', context: 'Industry: [field]', output: 'Report', framework: 'structured' },
+                'Competitive': { goal: 'Competitor analysis', context: 'Product: [name]', output: 'Matrix', framework: 'structured' },
+            },
+            'Creative': {
+                'Brainstorm': { goal: 'Generate ideas', context: 'Topic: [subject]', output: 'Ideas list', framework: 'creative' },
+                'Naming': { goal: 'Generate names', context: 'Product: [desc]', output: '20 options', framework: 'creative' },
+            },
+            'Education': {
+                'Lesson Plan': { goal: 'Create lesson', context: 'Subject: [topic]', output: 'Plan', framework: 'structured' },
+                'Study Guide': { goal: 'Study guide', context: 'Subject: [topic]', output: 'Guide', framework: 'detailed' },
+            },
+        };
+
+        let allTemplates = JSON.parse(JSON.stringify(DEFAULT_TEMPLATES));
+        let currentFramework = 'detailed';
+        let currentCategory = 'Master Prompts';
+        let allTemplateTitles = [];
+        let adminLoggedIn = false;
+
+        // Load from localStorage
+        function loadFromStorage() {
+            const saved = localStorage.getItem('sikunju_templates');
+            if (saved) {
+                allTemplates = JSON.parse(saved);
+            }
+            updateTemplateTitles();
+        }
+
+        // Save to localStorage
+        function saveToStorage() {
+            localStorage.setItem('sikunju_templates', JSON.stringify(allTemplates));
+            showNotification('Templates saved!');
+        }
+
+        function adminLogin() {
+            const password = document.getElementById('adminPassword').value;
+            if (password === 'admin123' || password === 'sikunju') {
+                adminLoggedIn = true;
+                document.getElementById('loginContainer').style.display = 'none';
+                document.getElementById('appContainer').classList.remove('hidden');
+                loadFromStorage();
+                initApp();
+                showNotification('Admin logged in!');
+            } else {
+                showNotification('Wrong password!', true);
+            }
+        }
+
+        function userLogout() {
+            adminLoggedIn = false;
+            document.getElementById('loginContainer').style.display = 'block';
+            document.getElementById('appContainer').classList.add('hidden');
+            document.getElementById('adminPassword').value = '';
+            document.getElementById('adminMode').classList.remove('active');
+            showNotification('Logged out!');
+        }
+
+        function toggleAdminPanel() {
+            const adminMode = document.getElementById('adminMode');
+            adminMode.classList.toggle('active');
+            
+            if (adminMode.classList.contains('active')) {
+                document.getElementById('headerTitle').textContent = 'Admin Panel';
+                renderAdminPanel();
+            } else {
+                document.getElementById('headerTitle').textContent = 'Create Your Prompt';
+            }
+        }
+
+        function updateTemplateTitles() {
+            allTemplateTitles = [];
+            Object.keys(allTemplates).forEach(cat => {
+                Object.keys(allTemplates[cat]).forEach(tmpl => {
+                    allTemplateTitles.push({ title: tmpl, category: cat });
+                });
+            });
+        }
+
+        function initApp() {
+            renderCategories();
+            renderFrameworks();
+            renderTemplates('Master Prompts');
+        }
+
+        function renderCategories() {
+            const list = document.getElementById('categoryList');
+            list.innerHTML = '';
+            Object.keys(allTemplates).forEach(cat => {
+                const btn = document.createElement('button');
+                btn.className = `category-btn ${cat === 'Master Prompts' ? 'active' : ''}`;
+                btn.textContent = cat + ` (${Object.keys(allTemplates[cat]).length})`;
+                btn.onclick = () => selectCategory(cat);
+                list.appendChild(btn);
+            });
+        }
+
+        function renderFrameworks() {
+            const tabs = document.getElementById('frameworkTabs');
+            tabs.innerHTML = '';
+            const frameworks = [
+                { id: 'detailed', label: 'Detailed' },
+                { id: 'role', label: 'Role' },
+                { id: 'format', label: 'Format' },
+                { id: 'few-shot', label: 'Examples' },
+                { id: 'step-by-step', label: 'Steps' },
+                { id: 'creative', label: 'Creative' }
+            ];
+            frameworks.forEach(f => {
+                const btn = document.createElement('button');
+                btn.className = `framework-tab ${f.id === 'detailed' ? 'active' : ''}`;
+                btn.textContent = f.label;
+                btn.onclick = () => selectFramework(f.id);
+                tabs.appendChild(btn);
+            });
+        }
+
+        function renderTemplates(category) {
+            const grid = document.getElementById('templateList');
+            grid.innerHTML = '';
+            Object.keys(allTemplates[category]).forEach(tmpl => {
+                const card = document.createElement('button');
+                card.className = 'template-card';
+                card.textContent = tmpl;
+                card.onclick = () => loadTemplate(tmpl, category);
+                grid.appendChild(card);
+            });
+        }
+
+        function selectCategory(cat) {
+            currentCategory = cat;
+            document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            renderTemplates(cat);
+        }
+
+        function selectFramework(fw) {
+            currentFramework = fw;
+            document.querySelectorAll('.framework-tab').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        function loadTemplate(tmpl, cat) {
+            const template = allTemplates[cat][tmpl];
+            document.getElementById('goal').value = template.goal;
+            document.getElementById('context').value = template.context;
+            document.getElementById('output').value = template.output;
+            currentFramework = template.framework;
+            
+            document.querySelectorAll('.framework-tab').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.framework-tab').forEach(btn => {
+                if (btn.textContent.toLowerCase() === template.framework.toLowerCase()) btn.classList.add('active');
+            });
+            
+            generatePrompt();
+        }
+
+        function generatePrompt() {
+            const goal = document.getElementById('goal').value;
+            const context = document.getElementById('context').value;
+            const output = document.getElementById('output').value;
+            const tone = document.getElementById('tone').value;
+            const taskType = document.getElementById('taskType').value;
+
+            if (!goal) {
+                showNotification('Please enter a goal', true);
+                return;
+            }
+
+            let prompt = '';
+            if (currentFramework === 'detailed') {
+                prompt = `Context and background:\n${context}\n\nTask:\n${goal}\n\nTone: ${tone}\n${output ? `\nDesired format:\n${output}` : ''}`;
+            } else if (currentFramework === 'role') {
+                prompt = `You are an expert ${taskType.toLowerCase()}. Your task:\n\n${goal}\n\nContext: ${context}\n\nTone: ${tone}${output ? `\nFormat as: ${output}` : ''}`;
+            } else if (currentFramework === 'format') {
+                prompt = `Task: ${goal}\n\nContext: ${context}\n\nFormat as:\n${output}\n\nTone: ${tone}`;
+            } else if (currentFramework === 'few-shot') {
+                prompt = `${goal}\n\nContext: ${context}\n\nExample:\n[EXAMPLE]\n\nCreate with tone: ${tone}${output ? `\nFormat: ${output}` : ''}`;
+            } else if (currentFramework === 'step-by-step') {
+                prompt = `Think step-by-step:\n\n${goal}\n\nContext: ${context}\n\nSteps:\n1. [Step]\n2. [Step]\n\nTone: ${tone}${output ? `\nOutput as: ${output}` : ''}`;
+            } else if (currentFramework === 'creative') {
+                prompt = `Creative brief:\n\nObjective: ${goal}\n\nContext: ${context}\n\nStyle: ${tone}${output ? `\nFormat: ${output}` : ''}`;
+            }
+
+            document.getElementById('preview').textContent = prompt;
+        }
+
+        function copyToClipboard() {
+            const text = document.getElementById('preview').textContent;
+            if (text === 'Your generated prompt will appear here...') {
+                showNotification('Generate a prompt first', true);
+                return;
+            }
+            navigator.clipboard.writeText(text).then(() => {
+                showNotification('Copied to clipboard!');
+            });
+        }
+
+        function downloadPrompt() {
+            const text = document.getElementById('preview').textContent;
+            if (text === 'Your generated prompt will appear here...') {
+                showNotification('Generate a prompt first', true);
+                return;
+            }
+            const element = document.createElement('a');
+            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+            element.setAttribute('download', 'sikunju_prompt.txt');
+            element.style.display = 'none';
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+            showNotification('Downloaded!');
+        }
+
+        function addNewTemplate() {
+            const category = document.getElementById('newCategory').value;
+            const name = document.getElementById('newName').value;
+            const goal = document.getElementById('newGoal').value;
+            const context = document.getElementById('newContext').value;
+            const output = document.getElementById('newOutput').value;
+            const framework = document.getElementById('newFramework').value;
+
+            if (!name || !goal) {
+                showNotification('Please fill in all fields', true);
+                return;
+            }
+
+            if (!allTemplates[category]) {
+                allTemplates[category] = {};
+            }
+
+            allTemplates[category][name] = { goal, context, output, framework };
+            saveToStorage();
+            updateTemplateTitles();
+            renderCategories();
+            renderAdminPanel();
+
+            // Clear form
+            document.getElementById('newName').value = '';
+            document.getElementById('newGoal').value = '';
+            document.getElementById('newContext').value = '';
+            document.getElementById('newOutput').value = '';
+
+            showNotification('Template added!');
+        }
+
+        function editTemplate(category, name) {
+            const template = allTemplates[category][name];
+            document.getElementById('newName').value = name;
+            document.getElementById('newGoal').value = template.goal;
+            document.getElementById('newContext').value = template.context;
+            document.getElementById('newOutput').value = template.output;
+            document.getElementById('newFramework').value = template.framework;
+            document.getElementById('newCategory').value = category;
+
+            // Delete old version
+            delete allTemplates[category][name];
+        }
+
+        function deleteTemplate(category, name) {
+            if (confirm(`Delete template: ${name}?`)) {
+                delete allTemplates[category][name];
+                saveToStorage();
+                updateTemplateTitles();
+                renderCategories();
+                renderAdminPanel();
+                showNotification('Template deleted!');
+            }
+        }
+
+        function renderAdminPanel() {
+            // Stats
+            let totalTemplates = 0;
+            let totalCategories = Object.keys(allTemplates).length;
+            Object.keys(allTemplates).forEach(cat => {
+                totalTemplates += Object.keys(allTemplates[cat]).length;
+            });
+
+            document.getElementById('stats').innerHTML = `
+                <div class="stat-card">
+                    <div class="number">${totalTemplates}</div>
+                    <div class="label">Total Templates</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number">${totalCategories}</div>
+                    <div class="label">Categories</div>
+                </div>
+            `;
+
+            // Templates list
+            const list = document.getElementById('adminTemplateList');
+            list.innerHTML = '';
+            document.getElementById('totalCount').textContent = totalTemplates;
+
+            Object.keys(allTemplates).forEach(category => {
+                Object.keys(allTemplates[category]).forEach(name => {
+                    const item = document.createElement('div');
+                    item.className = 'prompt-item';
+                    item.innerHTML = `
+                        <div class="prompt-item-info">
+                            <div class="prompt-item-title">${name}</div>
+                            <div class="prompt-item-category">${category}</div>
+                        </div>
+                        <div class="prompt-item-actions">
+                            <button class="edit" onclick="editTemplate('${category}', '${name}')">Edit</button>
+                            <button class="delete" onclick="deleteTemplate('${category}', '${name}')">Delete</button>
+                        </div>
+                    `;
+                    list.appendChild(item);
+                });
+            });
+        }
+
+        function exportData() {
+            const data = JSON.stringify(allTemplates, null, 2);
+            const element = document.createElement('a');
+            element.setAttribute('href', 'data:text/json;charset=utf-8,' + encodeURIComponent(data));
+            element.setAttribute('download', 'sikunju_templates.json');
+            element.style.display = 'none';
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+            showNotification('Data exported!');
+        }
+
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    allTemplates = imported;
+                    saveToStorage();
+                    updateTemplateTitles();
+                    renderCategories();
+                    renderAdminPanel();
+                    showNotification('Data imported!');
+                } catch (err) {
+                    showNotification('Invalid file format', true);
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function resetToDefaults() {
+            if (confirm('Reset all templates to defaults? This cannot be undone!')) {
+                allTemplates = JSON.parse(JSON.stringify(DEFAULT_TEMPLATES));
+                saveToStorage();
+                updateTemplateTitles();
+                renderCategories();
+                renderAdminPanel();
+                showNotification('Reset to defaults!');
+            }
+        }
+
+        function showNotification(msg, isError = false) {
+            const notif = document.getElementById('notification');
+            notif.textContent = msg;
+            notif.classList.toggle('error', isError);
+            notif.classList.add('show');
+            setTimeout(() => notif.classList.remove('show'), 2000);
+        }
+
+        document.getElementById('templateSearch').addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            const grid = document.getElementById('templateList');
+            grid.innerHTML = '';
+            
+            if (!query) {
+                renderTemplates(currentCategory);
+                return;
+            }
+            
+            allTemplateTitles.filter(t => t.title.toLowerCase().includes(query)).forEach(t => {
+                const card = document.createElement('button');
+                card.className = 'template-card';
+                card.textContent = t.title;
+                card.onclick = () => loadTemplate(t.title, t.category);
+                grid.appendChild(card);
+            });
+        });
+
+        // Initialize
+        loadFromStorage();
+    </script>
+</body>
+</html>
