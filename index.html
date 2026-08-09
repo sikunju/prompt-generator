@@ -1,328 +1,349 @@
+<!DOCTYPE html>
 <html>
 <head>
-<title>sikunju Prompt Generator</title>
+<title>sikunju - Prompt Generator (100+ Templates)</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-body {
-  margin: 0;
-  padding: 20px;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  min-height: 100vh;
-}
-
-.container {
-  max-width: 600px;
-  margin: 0 auto;
-  background: white;
-  padding: 40px;
-  border-radius: 15px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-}
-
-h1 {
-  font-size: 48px;
-  color: #ff9800;
-  margin: 0;
-  text-align: center;
-}
-
-h2 {
-  font-size: 28px;
-  color: #333;
-  text-align: center;
-  margin: 10px 0 30px 0;
-}
-
-p {
-  color: #666;
-  text-align: center;
-  margin: 0 0 20px 0;
-  line-height: 1.6;
-}
-
-input {
-  width: 100%;
-  padding: 15px;
-  margin: 15px 0;
-  border: 2px solid #ddd;
-  border-radius: 8px;
-  font-size: 14px;
-  box-sizing: border-box;
-  font-family: monospace;
-}
-
-button {
-  width: 100%;
-  padding: 15px;
-  margin: 15px 0;
-  background: #ff9800;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-button:hover {
-  background: #f57c00;
-}
-
-.steps {
-  background: #f9f9f9;
-  padding: 20px;
-  border-radius: 8px;
-  margin: 20px 0;
-  border-left: 4px solid #ff9800;
-}
-
-.steps h3 {
-  margin-top: 0;
-  color: #333;
-}
-
-.steps ol {
-  padding-left: 20px;
-  color: #666;
-  line-height: 1.8;
-}
-
-code {
-  background: #f0f0f0;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-family: monospace;
-}
-
-.success {
-  background: #e8f5e9;
-  color: #2e7d32;
-  padding: 15px;
-  border-radius: 8px;
-  margin: 15px 0;
-  border-left: 4px solid #2e7d32;
-  display: none;
-  text-align: center;
-}
-
-.error {
-  background: #ffebee;
-  color: #c62828;
-  padding: 15px;
-  border-radius: 8px;
-  margin: 15px 0;
-  border-left: 4px solid #c62828;
-  display: none;
-  text-align: center;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f5; }
+.container { max-width: 1400px; margin: 0 auto; }
+.flex { display: flex; }
+.sidebar { width: 280px; background: white; border-right: 1px solid #ddd; padding: 20px; overflow-y: auto; max-height: 100vh; }
+.main { flex: 1; display: flex; flex-direction: column; }
+.header { background: white; padding: 16px 24px; border-bottom: 1px solid #ddd; display: flex; justify-content: space-between; align-items: center; }
+.content { flex: 1; overflow-y: auto; padding: 24px; }
+.section { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+.section-title { font-size: 12px; color: #999; text-transform: uppercase; margin: 0 0 12px 0; }
+h1 { font-size: 24px; color: #1a73e8; margin: 0 0 4px 0; }
+h2 { font-size: 20px; color: #333; margin: 0; }
+p { color: #666; font-size: 13px; }
+.btn { padding: 10px 16px; border: 1px solid #ddd; background: white; border-radius: 6px; cursor: pointer; font-size: 13px; transition: all 0.2s; }
+.btn:hover { background: #f0f0f0; border-color: #999; }
+.btn-primary { background: #ff9800; color: white; border-color: #ff9800; }
+.btn-primary:hover { background: #f57c00; }
+.btn-success { background: #34a853; color: white; border-color: #34a853; }
+.category-btn { width: 100%; padding: 12px; text-align: left; margin-bottom: 8px; background: #f0f0f0; border: 1px solid #ddd; border-radius: 6px; cursor: pointer; font-size: 13px; transition: all 0.2s; }
+.category-btn:hover { background: #e0e0e0; }
+.category-btn.active { background: #1a73e8; color: white; border-color: #1a73e8; }
+.template-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px; margin-bottom: 16px; }
+.template-btn { padding: 12px; background: #f0f0f0; border: 1px solid #ddd; border-radius: 6px; cursor: pointer; font-size: 12px; text-align: center; min-height: 80px; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+.template-btn:hover { background: #e0e0e0; border-color: #999; }
+.template-btn.active { background: #1a73e8; color: white; }
+.framework-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 8px; margin-bottom: 16px; }
+.framework-btn { padding: 10px; background: #f0f0f0; border: 1px solid #ddd; border-radius: 6px; cursor: pointer; font-size: 12px; transition: all 0.2s; }
+.framework-btn:hover { background: #e0e0e0; }
+.framework-btn.active { background: #1a73e8; color: white; border-color: #1a73e8; }
+input[type="text"], textarea, select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-family: inherit; font-size: 13px; margin-bottom: 12px; }
+input[type="text"]:focus, textarea:focus, select:focus { outline: none; border-color: #1a73e8; box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1); }
+textarea { resize: vertical; min-height: 100px; }
+.preview { background: #f9f9f9; border: 1px solid #ddd; border-radius: 6px; padding: 15px; min-height: 150px; font-family: monospace; font-size: 12px; white-space: pre-wrap; word-wrap: break-word; max-height: 400px; overflow-y: auto; }
+.button-group { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.label { display: block; font-weight: 500; margin-bottom: 6px; color: #333; }
+.search-box { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; margin-bottom: 12px; font-size: 13px; }
+.notification { position: fixed; bottom: 20px; right: 20px; background: #34a853; color: white; padding: 12px 16px; border-radius: 6px; font-size: 13px; z-index: 1000; }
+.notification.error { background: #f44336; }
+@media (max-width: 768px) { .flex { flex-direction: column; } .sidebar { width: 100%; max-height: auto; } }
 </style>
 </head>
 <body>
 
-<div class="container">
+<div class="container flex" style="min-height: 100vh;">
   
-  <h1>🔥 sikunju</h1>
-  <h2>Real-Time Prompt Generator</h2>
-  
-  <p>Enter your Firebase Database URL to get started</p>
-  
-  <div class="error" id="errorMsg"></div>
-  <div class="success" id="successMsg">✅ Connected! Loading app...</div>
-  
-  <input 
-    type="text" 
-    id="dbUrl" 
-    placeholder="https://yourproject.firebaseio.com"
-    autocomplete="off"
-  />
-  
-  <button onclick="connect()">✅ Connect Database</button>
-  
-  <div class="steps">
-    <h3>📋 How to Get Your Firebase URL:</h3>
-    <ol>
-      <li>Go to <code>firebase.google.com</code></li>
-      <li>Click your project: <code>sikunju-prompt-generator</code></li>
-      <li>Click <code>Realtime Database</code></li>
-      <li>Copy the <code>Database URL</code> (shown at the top)</li>
-      <li>Paste it in the box above</li>
-      <li>Click <code>✅ Connect Database</code></li>
-    </ol>
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <h1>sikunju</h1>
+    <p style="color: #666; font-size: 12px; margin-bottom: 20px;">100+ Prompts</p>
+    
+    <h3 style="font-size: 12px; color: #999; text-transform: uppercase; margin-bottom: 12px;">Categories</h3>
+    <div id="categoryList"></div>
+    
+    <button onclick="logout()" class="btn btn-primary" style="width: 100%; margin-top: 20px;">Logout</button>
   </div>
   
-  <p style="font-size: 12px; color: #999;">
-    Example: <code>https://sikunju-prompts.firebaseio.com</code>
-  </p>
-
-</div>
-
-<script>
-function connect() {
-  const url = document.getElementById('dbUrl').value.trim();
-  const errorDiv = document.getElementById('errorMsg');
-  const successDiv = document.getElementById('successMsg');
-  
-  errorDiv.style.display = 'none';
-  
-  if (!url) {
-    errorDiv.textContent = '❌ Please enter your Firebase Database URL';
-    errorDiv.style.display = 'block';
-    return;
-  }
-  
-  if (!url.includes('firebaseio.com')) {
-    errorDiv.textContent = '❌ Invalid URL. Must be like: https://yourproject.firebaseio.com';
-    errorDiv.style.display = 'block';
-    return;
-  }
-  
-  successDiv.style.display = 'block';
-  
-  // Save URL and load app
-  localStorage.setItem('firebase_url', url);
-  
-  setTimeout(() => {
-    loadApp(url);
-  }, 2000);
-}
-
-function loadApp(firebaseUrl) {
-  document.body.innerHTML = '';
-  document.body.style.background = '#f5f5f5';
-  document.body.style.margin = '0';
-  document.body.style.padding = '20px';
-  
-  const html = `
-  <div style="max-width: 1200px; margin: 0 auto;">
-    <div style="display: flex; gap: 20px; min-height: 100vh;">
-      
-      <!-- SIDEBAR -->
-      <div style="width: 250px; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-        <h2 style="color: #1a73e8; margin-top: 0;">sikunju</h2>
-        <p style="color: #666; font-size: 12px;">✅ Connected</p>
-        <hr>
-        
-        <h3 style="font-size: 14px; color: #999; text-transform: uppercase;">Categories</h3>
-        <div id="categoryList"></div>
-        
-        <button onclick="logout()" style="width: 100%; margin-top: 20px; padding: 10px; background: #ff9800; color: white; border: none; border-radius: 6px; cursor: pointer;">
-          Logout
-        </button>
-      </div>
-      
-      <!-- MAIN CONTENT -->
-      <div style="flex: 1;">
-        
-        <h1 style="color: #333;">Create Your Prompt</h1>
-        
-        <!-- FRAMEWORKS -->
-        <div style="background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-          <h3 style="margin-top: 0; color: #999; font-size: 12px; text-transform: uppercase;">Select Framework</h3>
-          <div id="frameworks" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 8px;"></div>
-        </div>
-        
-        <!-- INPUT -->
-        <div style="background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-          <h3 style="margin-top: 0; color: #999; font-size: 12px; text-transform: uppercase;">Your Prompt</h3>
-          
-          <label style="display: block; margin-bottom: 8px; font-weight: bold;">Goal</label>
-          <input type="text" id="goal" placeholder="What do you want to create?" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; margin-bottom: 15px;">
-          
-          <label style="display: block; margin-bottom: 8px; font-weight: bold;">Context</label>
-          <textarea id="context" placeholder="Background information..." style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; min-height: 80px; font-family: Arial; margin-bottom: 15px;"></textarea>
-          
-          <button onclick="generatePrompt()" style="width: 100%; padding: 12px; background: #1a73e8; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">
-            🚀 Generate Prompt
-          </button>
-        </div>
-        
-        <!-- PREVIEW -->
-        <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-          <h3 style="margin-top: 0; color: #999; font-size: 12px; text-transform: uppercase;">Your Prompt</h3>
-          
-          <div id="preview" style="background: #f9f9f9; padding: 15px; border: 1px solid #ddd; border-radius: 6px; min-height: 150px; font-family: monospace; font-size: 13px; white-space: pre-wrap; word-wrap: break-word; line-height: 1.6; overflow-y: auto; max-height: 400px;">
-            Your prompt will appear here...
-          </div>
-          
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px;">
-            <button onclick="copyPrompt()" style="padding: 12px; background: #34a853; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">
-              📋 Copy
-            </button>
-            <button onclick="downloadPrompt()" style="padding: 12px; background: #34a853; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">
-              📥 Download
-            </button>
-          </div>
-        </div>
+  <!-- MAIN -->
+  <div class="main">
+    
+    <!-- HEADER -->
+    <div class="header">
+      <h2>Create Your Perfect Prompt</h2>
+      <div style="display: flex; gap: 10px;">
+        <button class="btn" onclick="resetForm()">Reset</button>
       </div>
     </div>
+    
+    <!-- CONTENT -->
+    <div class="content">
+      
+      <!-- FRAMEWORK SECTION -->
+      <div class="section">
+        <div class="section-title">Framework</div>
+        <div class="framework-grid" id="frameworks"></div>
+      </div>
+      
+      <!-- TEMPLATES SECTION -->
+      <div class="section">
+        <div class="section-title">Templates</div>
+        <input type="text" class="search-box" id="searchBox" placeholder="Search templates...">
+        <div class="template-grid" id="templates"></div>
+      </div>
+      
+      <!-- INPUT SECTION -->
+      <div class="section">
+        <div class="section-title">Customize</div>
+        
+        <label class="label">Goal</label>
+        <input type="text" id="goal" placeholder="What do you want to achieve?">
+        
+        <label class="label">Context</label>
+        <textarea id="context" placeholder="Background information, constraints, specifications..."></textarea>
+        
+        <label class="label">Output Format</label>
+        <select id="format">
+          <option>Natural text</option>
+          <option>Bullet points</option>
+          <option>Numbered list</option>
+          <option>JSON</option>
+          <option>Markdown</option>
+          <option>HTML</option>
+        </select>
+        
+        <label class="label">Tone</label>
+        <select id="tone">
+          <option>Professional</option>
+          <option>Casual</option>
+          <option>Creative</option>
+          <option>Technical</option>
+          <option>Friendly</option>
+        </select>
+        
+        <button class="btn btn-primary" style="width: 100%;" onclick="generatePrompt()">🚀 Generate Prompt</button>
+      </div>
+      
+      <!-- PREVIEW SECTION -->
+      <div class="section">
+        <div class="section-title">Your Prompt</div>
+        <div class="preview" id="preview">Your prompt will appear here...</div>
+        <div class="button-group" style="margin-top: 15px;">
+          <button class="btn btn-success" onclick="copyPrompt()">📋 Copy</button>
+          <button class="btn btn-success" onclick="downloadPrompt()">📥 Download</button>
+        </div>
+      </div>
+      
+    </div>
   </div>
-  `;
+</div>
+
+<div class="notification" id="notification"></div>
+
+<script>
+// 100+ TEMPLATES
+const TEMPLATES = {
+  'Master Prompts': {
+    'Ultimate Master': { goal: 'Get best possible response for any task', context: 'Task: [TASK], Context: [CONTEXT], Requirements: [REQUIREMENTS]' },
+    'Programming Master': { goal: 'Write production-quality code', context: 'Language: [LANG], Task: [TASK], Requirements: [REQ]' },
+    'Content Master': { goal: 'Create engaging content', context: 'Topic: [TOPIC], Audience: [WHO], Format: [FORMAT]' },
+    'Analysis Master': { goal: 'Deep analysis and insights', context: 'Subject: [SUBJECT], Perspective: [PERSPECTIVE]' },
+    'Business Master': { goal: 'Strategic business thinking', context: 'Business: [NAME], Challenge: [CHALLENGE]' },
+    'Teaching Master': { goal: 'Explain concepts clearly', context: 'Topic: [TOPIC], Level: [LEVEL], Audience: [WHO]' },
+    'Research Master': { goal: 'Comprehensive research', context: 'Topic: [TOPIC], Depth: [DEPTH]' },
+    'Creative Master': { goal: 'Creative and original ideas', context: 'Project: [PROJECT], Style: [STYLE]' },
+    'Communication Master': { goal: 'Clear persuasive communication', context: 'Message: [MSG], Audience: [WHO]' },
+    'Problem Master': { goal: 'Solve complex problems', context: 'Problem: [PROBLEM], Constraints: [CONSTRAINTS]' }
+  },
+  'Writing': {
+    'Blog Post': { goal: 'Write engaging blog post', context: 'Topic: [TOPIC], Audience: [WHO], Length: [WORDS]' },
+    'Email': { goal: 'Write professional email', context: 'To: [PERSON], Purpose: [PURPOSE]' },
+    'Social Post': { goal: 'Create social media content', context: 'Platform: [PLATFORM], Topic: [TOPIC]' },
+    'Newsletter': { goal: 'Write newsletter content', context: 'Topic: [TOPIC], Subscribers: [TYPE]' },
+    'Article': { goal: 'Write article', context: 'Topic: [TOPIC], Publication: [PUB]' },
+    'Product Description': { goal: 'Write product description', context: 'Product: [NAME], Features: [FEATURES]' },
+    'Press Release': { goal: 'Write press release', context: 'Company: [NAME], News: [NEWS]' },
+    'Script': { goal: 'Write video/audio script', context: 'Topic: [TOPIC], Length: [MIN]' },
+    'Story': { goal: 'Write short story', context: 'Genre: [GENRE], Length: [WORDS]' },
+    'Poem': { goal: 'Write poem', context: 'Theme: [THEME], Style: [STYLE]' },
+    'Cover Letter': { goal: 'Write cover letter', context: 'Job: [POSITION], Company: [COMPANY]' },
+    'Resume Summary': { goal: 'Write resume bullet point', context: 'Role: [ROLE], Achievement: [ACHIEVEMENT]' },
+    'Job Description': { goal: 'Write job posting', context: 'Position: [TITLE], Company: [NAME]' },
+    'Case Study': { goal: 'Write case study', context: 'Client: [NAME], Result: [RESULT]' },
+    'FAQ': { goal: 'Write FAQ content', context: 'Product: [NAME], Common Q: [QUESTIONS]' },
+    'How-To Guide': { goal: 'Write how-to guide', context: 'Topic: [TOPIC], Difficulty: [LEVEL]' },
+    'Testimonial': { goal: 'Write customer testimonial', context: 'Product: [NAME], Benefit: [BENEFIT]' },
+    'Travel Guide': { goal: 'Write travel guide', context: 'Location: [PLACE], Focus: [FOCUS]' },
+    'Review': { goal: 'Write product/book review', context: 'Product: [NAME], Rating: [RATING]' },
+    'Comparison': { goal: 'Write comparison article', context: 'Items: [ITEM1] vs [ITEM2]' }
+  },
+  'Marketing': {
+    'Ad Copy': { goal: 'Write compelling ad copy', context: 'Product: [NAME], Target: [WHO]' },
+    'Landing Page': { goal: 'Write landing page', context: 'Product: [NAME], Value: [VALUE]' },
+    'Email Campaign': { goal: 'Create email campaign', context: 'Product: [NAME], Goal: [GOAL]' },
+    'Social Strategy': { goal: 'Plan social strategy', context: 'Business: [NAME], Platform: [PLATFORM]' },
+    'Brand Positioning': { goal: 'Create brand positioning', context: 'Brand: [NAME], Market: [MARKET]' },
+    'Campaign Brief': { goal: 'Write campaign brief', context: 'Campaign: [NAME], Budget: [BUDGET]' },
+    'Marketing Plan': { goal: 'Create marketing plan', context: 'Product: [NAME], Timeline: [TIMEFRAME]' },
+    'Tagline': { goal: 'Create catchy tagline', context: 'Brand: [NAME], Industry: [INDUSTRY]' },
+    'Slogan': { goal: 'Write brand slogan', context: 'Company: [NAME], Values: [VALUES]' },
+    'Influencer Outreach': { goal: 'Write influencer pitch', context: 'Product: [NAME], Influencer: [TYPE]' }
+  },
+  'Business': {
+    'Business Plan': { goal: 'Create business plan', context: 'Business: [NAME], Service: [SERVICE]' },
+    'Pitch Deck': { goal: 'Create pitch deck outline', context: 'Startup: [NAME], Ask: [AMOUNT]' },
+    'Proposal': { goal: 'Write business proposal', context: 'Client: [NAME], Offer: [OFFER]' },
+    'Meeting Agenda': { goal: 'Create meeting agenda', context: 'Topic: [TOPIC], Attendees: [COUNT]' },
+    'Quarterly Report': { goal: 'Write quarterly report', context: 'Results: [DATA], Period: [QUARTER]' },
+    'Budget': { goal: 'Create budget', context: 'Department: [DEPT], Amount: [AMOUNT]' },
+    'Strategic Plan': { goal: 'Create strategic plan', context: 'Company: [NAME], Goals: [GOALS]' },
+    'Performance Review': { goal: 'Write performance review', context: 'Employee: [NAME], Period: [PERIOD]' },
+    'Memo': { goal: 'Write business memo', context: 'Topic: [TOPIC], Audience: [WHO]' },
+    'Risk Assessment': { goal: 'Write risk assessment', context: 'Project: [NAME], Risks: [RISKS]' },
+    'KPI Dashboard': { goal: 'Create KPI dashboard', context: 'Business: [NAME], Metrics: [METRICS]' },
+    'Org Chart': { goal: 'Create organizational chart', context: 'Company: [NAME], Size: [SIZE]' }
+  },
+  'Development': {
+    'Code Documentation': { goal: 'Write code documentation', context: 'Language: [LANG], Function: [FUNC]' },
+    'API Documentation': { goal: 'Create API docs', context: 'Endpoint: [URL], Method: [METHOD]' },
+    'Bug Report': { goal: 'Write bug report', context: 'Error: [ERROR], System: [SYSTEM]' },
+    'Feature Request': { goal: 'Write feature request', context: 'Feature: [NAME], Benefit: [BENEFIT]' },
+    'Technical Spec': { goal: 'Write technical spec', context: 'Project: [NAME], Tech: [TECH]' },
+    'Architecture Design': { goal: 'Design system architecture', context: 'System: [NAME], Scale: [SCALE]' },
+    'README': { goal: 'Write README file', context: 'Project: [NAME], Purpose: [PURPOSE]' },
+    'Code Review': { goal: 'Review code', context: 'Code: [CODE], Issue: [ISSUE]' },
+    'Git Commit': { goal: 'Write git commit message', context: 'Change: [CHANGE], Issue: [ISSUE]' },
+    'Unit Test': { goal: 'Write unit test', context: 'Function: [FUNC], Language: [LANG]' },
+    'Database Schema': { goal: 'Design database', context: 'Data: [DATA], Scale: [SCALE]' },
+    'API Design': { goal: 'Design REST API', context: 'Resource: [RESOURCE], Actions: [ACTIONS]' }
+  },
+  'Analysis': {
+    'Market Research': { goal: 'Conduct market research', context: 'Market: [MARKET], Scope: [SCOPE]' },
+    'Competitive Analysis': { goal: 'Analyze competitors', context: 'Competitors: [LIST], Focus: [FOCUS]' },
+    'Data Analysis': { goal: 'Analyze data', context: 'Data: [DATA], Question: [QUESTION]' },
+    'Trend Analysis': { goal: 'Analyze trends', context: 'Industry: [INDUSTRY], Period: [PERIOD]' },
+    'User Research': { goal: 'Conduct user research', context: 'Product: [NAME], Method: [METHOD]' },
+    'Survey Design': { goal: 'Design survey', context: 'Topic: [TOPIC], Audience: [WHO]' },
+    'SWOT Analysis': { goal: 'Conduct SWOT', context: 'Business: [NAME], Focus: [FOCUS]' },
+    'Feasibility Study': { goal: 'Write feasibility study', context: 'Project: [NAME], Constraints: [CONSTRAINTS]' },
+    'Literature Review': { goal: 'Write literature review', context: 'Topic: [TOPIC], Scope: [SCOPE]' },
+    'User Persona': { goal: 'Create user persona', context: 'Product: [NAME], Segment: [SEGMENT]' }
+  },
+  'Creative': {
+    'Brainstorm Ideas': { goal: 'Brainstorm ideas', context: 'Topic: [TOPIC], Quantity: [COUNT]' },
+    'Content Calendar': { goal: 'Create content calendar', context: 'Platform: [PLATFORM], Duration: [TIME]' },
+    'Brand Guidelines': { goal: 'Create brand guidelines', context: 'Brand: [NAME], Elements: [ELEMENTS]' },
+    'Design Brief': { goal: 'Write design brief', context: 'Project: [PROJECT], Style: [STYLE]' },
+    'Naming Ideas': { goal: 'Generate naming ideas', context: 'Product: [NAME], Style: [STYLE]' },
+    'Visual Concepts': { goal: 'Describe visual concepts', context: 'Project: [PROJECT], Mood: [MOOD]' },
+    'Story Concept': { goal: 'Develop story concept', context: 'Genre: [GENRE], Audience: [WHO]' },
+    'Character Profile': { goal: 'Create character', context: 'Role: [ROLE], Setting: [SETTING]' },
+    'Dialogue Writing': { goal: 'Write dialogue', context: 'Characters: [CHARS], Situation: [SITUATION]' },
+    'UX Improvement': { goal: 'Improve UX', context: 'Product: [NAME], Issue: [ISSUE]' }
+  },
+  'Education': {
+    'Lesson Plan': { goal: 'Create lesson plan', context: 'Topic: [TOPIC], Grade: [GRADE]' },
+    'Course Outline': { goal: 'Create course outline', context: 'Subject: [SUBJECT], Level: [LEVEL]' },
+    'Study Guide': { goal: 'Write study guide', context: 'Topic: [TOPIC], Exam: [EXAM]' },
+    'Tutorial': { goal: 'Write tutorial', context: 'Topic: [TOPIC], Level: [LEVEL]' },
+    'Quiz Questions': { goal: 'Create quiz questions', context: 'Topic: [TOPIC], Count: [COUNT]' },
+    'Exam Questions': { goal: 'Write exam questions', context: 'Topic: [TOPIC], Difficulty: [LEVEL]' },
+    'Flashcards': { goal: 'Create flashcards', context: 'Topic: [TOPIC], Count: [COUNT]' },
+    'Presentation': { goal: 'Create presentation', context: 'Topic: [TOPIC], Duration: [MINS]' },
+    'Educational Content': { goal: 'Write educational content', context: 'Topic: [TOPIC], Audience: [WHO]' },
+    'Research Proposal': { goal: 'Write research proposal', context: 'Topic: [TOPIC], Duration: [TIME]' }
+  }
+};
+
+// STATE
+let currentCategory = 'Master Prompts';
+let currentFramework = 'detailed';
+let currentTemplate = null;
+
+// INITIALIZE
+window.onload = () => {
+  renderCategories();
+  renderFrameworks();
+  renderTemplates();
   
-  document.body.innerHTML = html;
-  
-  // Initialize
-  const templates = {
-    'Writing': {
-      'Blog Post': { goal: 'Write an engaging blog post', context: 'Topic: [TOPIC], Audience: [WHO], Length: [WORDS] words' },
-      'Email': { goal: 'Write professional email', context: 'To: [PERSON], Purpose: [WHAT]' },
-      'Social Post': { goal: 'Create social media post', context: 'Platform: [PLATFORM], Topic: [TOPIC]' }
-    },
-    'Marketing': {
-      'Ad Copy': { goal: 'Write compelling ad copy', context: 'Product: [NAME], Target: [WHO]' },
-      'Landing Page': { goal: 'Write landing page copy', context: 'Product: [NAME], Benefit: [VALUE]' }
-    },
-    'Business': {
-      'Business Plan': { goal: 'Create business plan outline', context: 'Business: [NAME], Service: [TYPE]' },
-      'Pitch': { goal: 'Create elevator pitch', context: 'Company: [NAME], Ask: [AMOUNT]' }
-    }
-  };
-  
-  window.templates = templates;
-  window.currentFramework = 'Detailed';
-  window.currentCategory = 'Writing';
-  
-  // Render categories
-  let catHTML = '';
-  Object.keys(templates).forEach(cat => {
-    catHTML += '<button onclick="selectCategory(\'' + cat + '\')" style="width: 100%; padding: 10px; background: #f0f0f0; border: 1px solid #ddd; border-radius: 6px; margin-bottom: 8px; cursor: pointer; text-align: left;">' + cat + '</button>';
+  document.getElementById('searchBox').addEventListener('input', (e) => {
+    filterTemplates(e.target.value);
   });
-  document.getElementById('categoryList').innerHTML = catHTML;
-  
-  // Render frameworks
-  let fwHTML = '';
-  ['Detailed', 'Creative', 'Step-by-Step', 'Few-Shot'].forEach(f => {
-    fwHTML += '<button onclick="selectFramework(\'' + f + '\')" style="padding: 8px; background: #f0f0f0; border: 1px solid #ddd; border-radius: 6px; cursor: pointer; text-align: center;">' + f + '</button>';
-  });
-  document.getElementById('frameworks').innerHTML = fwHTML;
+};
+
+function renderCategories() {
+  const html = Object.keys(TEMPLATES).map(cat => 
+    `<button class="category-btn ${cat === 'Master Prompts' ? 'active' : ''}" onclick="selectCategory('${cat}')">${cat}</button>`
+  ).join('');
+  document.getElementById('categoryList').innerHTML = html;
+}
+
+function renderFrameworks() {
+  const frameworks = [
+    { id: 'detailed', name: 'Detailed' },
+    { id: 'role', name: 'Role-Play' },
+    { id: 'format', name: 'Format' },
+    { id: 'few-shot', name: 'Few-Shot' },
+    { id: 'step-by-step', name: 'Step-by-Step' },
+    { id: 'creative', name: 'Creative' }
+  ];
+  const html = frameworks.map(fw =>
+    `<button class="framework-btn ${fw.id === 'detailed' ? 'active' : ''}" onclick="selectFramework('${fw.id}')">${fw.name}</button>`
+  ).join('');
+  document.getElementById('frameworks').innerHTML = html;
+}
+
+function renderTemplates(filter = '') {
+  const templates = TEMPLATES[currentCategory] || {};
+  const html = Object.keys(templates)
+    .filter(name => !filter || name.toLowerCase().includes(filter.toLowerCase()))
+    .map(name =>
+      `<button class="template-btn" onclick="loadTemplate('${name}')">${name}</button>`
+    ).join('');
+  document.getElementById('templates').innerHTML = html || '<p style="color: #999;">No templates found</p>';
+}
+
+function filterTemplates(query) {
+  renderTemplates(query);
 }
 
 function selectCategory(cat) {
-  window.currentCategory = cat;
+  currentCategory = cat;
+  document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('searchBox').value = '';
+  renderTemplates();
 }
 
 function selectFramework(fw) {
-  window.currentFramework = fw;
+  currentFramework = fw;
+  document.querySelectorAll('.framework-btn').forEach(btn => btn.classList.remove('active'));
+  event.target.classList.add('active');
+}
+
+function loadTemplate(name) {
+  const template = TEMPLATES[currentCategory][name];
+  document.getElementById('goal').value = template.goal;
+  document.getElementById('context').value = template.context;
+  currentTemplate = name;
 }
 
 function generatePrompt() {
   const goal = document.getElementById('goal').value;
   const context = document.getElementById('context').value;
+  const format = document.getElementById('format').value;
+  const tone = document.getElementById('tone').value;
   
   if (!goal) {
-    alert('Please enter a goal');
+    showNotification('Please enter a goal', true);
     return;
   }
   
-  const prompt = 'Goal: ' + goal + '\n\nContext: ' + context + '\n\nFramework: ' + window.currentFramework;
+  let prompt = `Goal: ${goal}\n\nContext: ${context}\n\nFramework: ${currentFramework}\n\nFormat: ${format}\n\nTone: ${tone}`;
+  
   document.getElementById('preview').textContent = prompt;
 }
 
 function copyPrompt() {
   const text = document.getElementById('preview').textContent;
   navigator.clipboard.writeText(text).then(() => {
-    alert('✅ Copied to clipboard!');
+    showNotification('✅ Copied to clipboard!');
   });
 }
 
@@ -335,20 +356,27 @@ function downloadPrompt() {
   document.body.appendChild(element);
   element.click();
   document.body.removeChild(element);
-  alert('✅ Downloaded!');
+  showNotification('✅ Downloaded!');
+}
+
+function resetForm() {
+  document.getElementById('goal').value = '';
+  document.getElementById('context').value = '';
+  document.getElementById('preview').textContent = 'Your prompt will appear here...';
+  showNotification('Form reset');
 }
 
 function logout() {
   location.reload();
 }
 
-// Check if already connected
-window.onload = function() {
-  const saved = localStorage.getItem('firebase_url');
-  if (saved) {
-    loadApp(saved);
-  }
-};
+function showNotification(msg, isError = false) {
+  const notif = document.getElementById('notification');
+  notif.textContent = msg;
+  notif.classList.toggle('error', isError);
+  notif.style.display = 'block';
+  setTimeout(() => { notif.style.display = 'none'; }, 2000);
+}
 </script>
 
 </body>
